@@ -3,13 +3,13 @@ package com.bridgelabz.employeepayrollapp.controllers;
 import com.bridgelabz.employeepayrollapp.dto.EmployeePayrollDTO;
 import com.bridgelabz.employeepayrollapp.dto.ResponseDTO;
 import com.bridgelabz.employeepayrollapp.entity.EmployeePayrollData;
-import com.bridgelabz.employeepayrollapp.service.EmployeePayrollService;
 import com.bridgelabz.employeepayrollapp.service.IEmployeePayrollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -37,7 +37,7 @@ public class EmployeePayrollController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO> createEmployeePayrollData(@RequestBody EmployeePayrollDTO empPayrollDTO){
+    public ResponseEntity<ResponseDTO> createEmployeePayrollData(@Valid @RequestBody EmployeePayrollDTO empPayrollDTO){
         EmployeePayrollData empData = null;
         empData = employeePayrollService.createEmployeePayrollData(empPayrollDTO);
         ResponseDTO respDTO = new ResponseDTO("Created Employee Payroll Data Successfully", empData);
@@ -45,7 +45,7 @@ public class EmployeePayrollController {
     }
     @PutMapping(path = "/update/{empId}")
     public ResponseEntity<ResponseDTO> updateEmployeePayrollData(@PathVariable("empId") int empId,
-                                                                 @RequestBody EmployeePayrollDTO empPayrollDTO){
+                                                                 @Valid @RequestBody EmployeePayrollDTO empPayrollDTO){
 
         EmployeePayrollData employeePayrollData = employeePayrollService.updateEmployeePayrollData(empId, empPayrollDTO);
         ResponseDTO respDTO = new ResponseDTO("Updated Employee payroll Data for: ", empPayrollDTO);
@@ -56,8 +56,6 @@ public class EmployeePayrollController {
         employeePayrollService.deleteEmployeePayrollData(empId);
         ResponseDTO respDTO = new ResponseDTO("Deleted Successfully", "Deleted id: " +empId);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
-
     }
-//localhost:8089/employeepayrollservice/delete/1
 
 }
